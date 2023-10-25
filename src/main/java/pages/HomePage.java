@@ -37,41 +37,36 @@ public class HomePage extends PageBase {
         LocalDate localDate = LocalDate.now();
         String strDay = localDate.toString();
         System.out.println(strDay);
-
-        String[] partsss = strDay.split("2023-");
+        String[] partsss = strDay.split("-");
         String striDay = partsss[1];
-
+        String striDay2 = partsss[0];
+        String striDay3 = partsss[2];
+        System.out.println(striDay);
+        System.out.println(striDay2);
+        System.out.println(striDay3);
         Month compairMonthsStr1 = localDate.getMonth();
         System.out.println(compairMonthsStr1);
-
-
-
-
-
-
-        var daaay = "[data-testid=\"" + striDay + "-daytext\"]";
-        //System.out.println(daaay);
-        var day = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"] " + daaay);
-
+        var daaay = "[data-testid=\"" + striDay + "-" + striDay3 + "-daytext\"]";
+        System.out.println(daaay);
+        var day = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + daaay);
         expwait();
         click1(day);
         expwait();
-
         LocalDate localDate1 = LocalDate.now().plusDays(20);
         String strDay2 = localDate1.toString();
-
-        String[] partssss = strDay2.split("2023-");
+        String[] partssss = strDay2.split("-");
         String striiDay = partssss[1];
-
+        String striiDay2 = partssss[0];
+        String striiDay3 = partssss[2];
+        System.out.println(striiDay);
+        System.out.println(striiDay2);
+        System.out.println(striiDay3);
         Month compairMonthsStr2 = localDate1.getMonth();
         System.out.println(compairMonthsStr2);
-
-
-        var daaayy = "[data-testid=\"" + striiDay + "-daytext\"]";
         expwait();
-        var dayy = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"] " + daaayy);
-
-
+        var daaayy = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
+        System.out.println(daaayy);
+        var dayy = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + daaayy);
 
 
         int c = switch (compairMonthsStr1) {
