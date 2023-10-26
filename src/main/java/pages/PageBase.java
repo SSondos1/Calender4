@@ -44,4 +44,6 @@ public class PageBase {
         }
         return new PageBase(driver);
     }
-}
+
+    }
+

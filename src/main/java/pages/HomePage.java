@@ -1,129 +1,105 @@
 package pages;
 
-import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 
 public class HomePage extends PageBase {
     //locators
-    private By checkInBtn = By.cssSelector("[class=\"i16cvsa4 n1nty364 dir dir-ltr\"] [id = \"checkin_input\"]");
-
+    private final By checkInBtn = By.cssSelector("div [class=\"i1nr4t79 dir dir-ltr\"] [data-testid=\"checkin\"]");
+    private final By rightRow = By.cssSelector("[class=\"cdfgcv7 rgl4t1u dir dir-ltr\"]");
     //variables
-    int ParseMonth;
-
     //Constractor
     public HomePage(WebDriver driver) {
         super(driver);
     }
     //action
-
-    public void SelectDate() {
-         expwait();
+    public void ClickOnCheckInDate() {
+        expwait();
         click1(checkInBtn);
         expwait();
-
         new HomePage(driver);
     }
-
-    public void CompareDate() {
-
-        var rightRow = By.cssSelector("[class=\"cdfgcv7 rgl4t1u dir dir-ltr\"]");
-
+    public void SelectCheckInDate() {
         LocalDate localDate = LocalDate.now();
         String strDay = localDate.toString();
-        System.out.println(strDay);
         String[] partsss = strDay.split("-");
         String striDay = partsss[1];
-        String striDay2 = partsss[0];
         String striDay3 = partsss[2];
-        System.out.println(striDay);
-        System.out.println(striDay2);
-        System.out.println(striDay3);
-        Month compairMonthsStr1 = localDate.getMonth();
-        System.out.println(compairMonthsStr1);
-        var daaay = "[data-testid=\"" + striDay + "-" + striDay3 + "-daytext\"]";
-        System.out.println(daaay);
-        var day = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + daaay);
+        var currentDay = "[data-testid=\"" + striDay + "-" + striDay3 + "-daytext\"]";
+        var checkInDay = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + currentDay);
         expwait();
-        click1(day);
+        click1(checkInDay);
+        new HomePage(driver);
+    }
+    public void SelectCheckoutDateInTheSameMonths(int Days) {
         expwait();
-        LocalDate localDate1 = LocalDate.now().plusDays(20);
+        LocalDate localDate1 = LocalDate.now().plusDays(Days);
         String strDay2 = localDate1.toString();
         String[] partssss = strDay2.split("-");
         String striiDay = partssss[1];
-        String striiDay2 = partssss[0];
         String striiDay3 = partssss[2];
-        System.out.println(striiDay);
-        System.out.println(striiDay2);
-        System.out.println(striiDay3);
-        Month compairMonthsStr2 = localDate1.getMonth();
-        System.out.println(compairMonthsStr2);
         expwait();
-        var daaayy = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
-        System.out.println(daaayy);
-        var dayy = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + daaayy);
+        var checkOutDay = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
+        var checkOutDayBtn = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + checkOutDay);
+        expwait();
+        click1(checkOutDayBtn);
+        new HomePage(driver);
+    }
 
-
-        int c = switch (compairMonthsStr1) {
-            case JANUARY -> 1;
-            case FEBRUARY -> 2;
-            case MARCH -> 3;
-            case APRIL -> 4;
-            case MAY -> 5;
-            case JUNE -> 6;
-            case JULY -> 7;
-            case AUGUST -> 8;
-            case SEPTEMBER -> 9;
-            case OCTOBER -> 10;
-            case NOVEMBER -> 11;
-            case DECEMBER -> 12;
+    public void SelectCheckoutDateInDifferentMonths (int Days) {
+        expwait();
+        LocalDate localDate1 = LocalDate.now().plusDays(Days);
+        String strDay2 = localDate1.toString();
+        String[] partssss = strDay2.split("-");
+        String striiDay = partssss[1];
+        String striiDay3 = partssss[2];
+        expwait();
+        var checkOutDay = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
+        var checkOutDayBtn = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + checkOutDay);
+        expwait();
+        LocalDate localDate = LocalDate.now();
+        String currentMonthStr = localDate.getMonth().toString().toLowerCase();
+        String checkOutMonthStr = localDate1.getMonth().toString().toLowerCase();
+        int currentMonthInt = switch (currentMonthStr) {
+            case "january" -> 1;
+            case "february" -> 2;
+            case "march" -> 3;
+            case "april" -> 4;
+            case "may" -> 5;
+            case "june" -> 6;
+            case "july" -> 7;
+            case "august" -> 8;
+            case "september" -> 9;
+            case "october" -> 10;
+            case "november" -> 11;
+            case "december" -> 12;
+            default -> 0;
         };
 
-        int f = switch (compairMonthsStr2) {
-            case JANUARY -> 1;
-            case FEBRUARY -> 2;
-            case MARCH -> 3;
-            case APRIL -> 4;
-            case MAY -> 5;
-            case JUNE -> 6;
-            case JULY -> 7;
-            case AUGUST -> 8;
-            case SEPTEMBER -> 9;
-            case OCTOBER -> 10;
-            case NOVEMBER -> 11;
-            case DECEMBER -> 12;
+        int checkOutMonthInt = switch (checkOutMonthStr) {
+            case "january" -> 1;
+            case "february" -> 2;
+            case "march" -> 3;
+            case "april" -> 4;
+            case "may" -> 5;
+            case "june" -> 6;
+            case "july" -> 7;
+            case "august" -> 8;
+            case "september" -> 9;
+            case "october" -> 10;
+            case "november" -> 11;
+            case "december" -> 12;
+            default -> 0;
         };
 
-        System.out.println(c);
-        System.out.println(f);
-
-
-        if ( c == f) {
-            expwait();
-            click1(dayy);
-            expwait();
-
-        } else if (c < f) {
-
-
-            for (int i = c; i < f; i++) {
-
-                expwait();
-                click1(rightRow);
-                expwait();
-            }
-
+        for (int i = currentMonthInt;i <checkOutMonthInt ; i++){
+            click1(rightRow);
         }
         expwait();
-        click1(dayy);
-        expwait();
-
+        click1(checkOutDayBtn);
         new HomePage(driver);
-
     }
+
 }

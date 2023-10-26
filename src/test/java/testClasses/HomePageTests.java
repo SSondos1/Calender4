@@ -17,10 +17,19 @@ public class HomePageTests {
         driver.get("https://www.airbnb.com/a/stays/United-States?&c=.pi0.pk1468961678_62676057731&localized_ghost=true&gclid=Cj0KCQjwhL6pBhDjARIsAGx8D5_Upnm-LAo9NwIioIYAzBWSgkWH5ZGt5YW7pn7bP9uQcvQ3rxpWLUQaArwxEALw_wcB&gclsrc=aw.ds");
         driver.manage().window().maximize();
     }
-    @Test
-    public void selectDatee(){
-    homePage.SelectDate();
-    homePage.CompareDate();
+    @Test(priority = 1)
+    public void selectDateInSameMonth(){
+    homePage.ClickOnCheckInDate();
+    homePage.SelectCheckInDate();
+    homePage.SelectCheckoutDateInTheSameMonths(3);
+
+    }
+
+    @Test(priority = 2)
+    public void selectDateInOtherMonth(){
+        homePage.ClickOnCheckInDate();
+        homePage.SelectCheckInDate();
+        homePage.SelectCheckoutDateInDifferentMonths(30);
     }
     @AfterTest
     public void tearDown() throws InterruptedException{
