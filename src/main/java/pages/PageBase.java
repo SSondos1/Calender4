@@ -6,9 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 public class PageBase {
     WebDriver driver;
@@ -19,8 +22,13 @@ public class PageBase {
         return new Actions(driver);
     }
     public  WebDriverWait expwait(){
-        WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(100));
+        WebDriverWait wait;
+        wait = new WebDriverWait(driver,Duration.ofSeconds(100));
         return wait;
+    }
+    public void impwait(){
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+
     }
     public PageBase insertText(By locator,String text){
         WebElement webElement = driver.findElement(locator);
@@ -29,20 +37,26 @@ public class PageBase {
         webElement.sendKeys(text);
         return new PageBase(driver);
     }
-    public PageBase click1(By locator){
+    public void click1(By locator){
         WebElement webElement = driver.findElement(locator);
         expwait().until(ExpectedConditions.elementToBeClickable(webElement));
         webElement.click();
-        return new PageBase(driver);
+        new PageBase(driver);
     }
-    public PageBase click2(By locator){
-        WebElement foo = driver.findElement(locator);
-        try{
-            foo.click();
-        }catch (StaleElementReferenceException e){
-            System.out.println(e);
-        }
-        return new PageBase(driver);
+    public WebElement fluentWait(WebDriver driver, final By locator, int timeoutSeconds, int pollingIntervalMillis) {
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(timeoutSeconds))
+                .pollingEvery(Duration.ofMillis(pollingIntervalMillis))
+                .ignoring(NoSuchElementException.class);
+
+        WebElement element;
+        element = wait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(locator);
+            }
+        });
+
+        return element;
     }
 
     }

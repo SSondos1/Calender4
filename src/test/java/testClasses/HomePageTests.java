@@ -14,26 +14,31 @@ public class HomePageTests {
     public void setUp (){
         driver = new ChromeDriver();
         homePage = new HomePage(driver);
-        driver.get("https://www.airbnb.com/a/stays/United-States?&c=.pi0.pk1468961678_62676057731&localized_ghost=true&gclid=Cj0KCQjwhL6pBhDjARIsAGx8D5_Upnm-LAo9NwIioIYAzBWSgkWH5ZGt5YW7pn7bP9uQcvQ3rxpWLUQaArwxEALw_wcB&gclsrc=aw.ds");
+        driver.get("https://www.airbnb.com/");
         driver.manage().window().maximize();
     }
     @Test(priority = 1)
     public void selectDateInSameMonth(){
-    homePage.ClickOnCheckInDate();
-    homePage.SelectCheckInDate();
-    homePage.SelectCheckoutDateInTheSameMonths(3);
-
+        homePage.ClickOnCheckInDate();
+        homePage.SelectCheckInDate();
+        homePage.SelectCheckoutDateInTheSameMonths(1);
     }
 
     @Test(priority = 2)
     public void selectDateInOtherMonth(){
         homePage.ClickOnCheckInDate();
         homePage.SelectCheckInDate();
-        homePage.SelectCheckoutDateInDifferentMonths(30);
+        homePage.SelectCheckoutDateInDifferentMonths(7);
     }
-    @AfterTest
-    public void tearDown() throws InterruptedException{
-         Thread.sleep(2000);
-        driver.quit();
+
+    @Test(priority = 3)
+    public void SelectDateInOtherYears(){
+        homePage.ClickOnCheckInDate();
+        homePage.SelectCheckInDate();
+        homePage.SelectCheckoutDateInDifferentYears(5);
     }
+   @AfterTest
+     public void tearDown(){
+       driver.quit();
+     }
 }

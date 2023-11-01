@@ -4,11 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class HomePage extends PageBase {
     //locators
-    private final By checkInBtn = By.cssSelector("div [class=\"i1nr4t79 dir dir-ltr\"] [data-testid=\"checkin\"]");
-    private final By rightRow = By.cssSelector("[class=\"cdfgcv7 rgl4t1u dir dir-ltr\"]");
+    private final By anyWhereBtn = By.xpath("(//button[@class=\"ffgcxut dir dir-ltr\"])[1]");
+    private final By checkInBtn = By.xpath("(//div[@class=\"lc92ud4 dir dir-ltr\"])[1]");
+    private final By checkInBtn2 = By.xpath("(//div[@class=\"c1nxe26m dir dir-ltr\"])[1]");
+    private final By rightRow = By.cssSelector("[aria-label=\"Move forward to switch to the next month.\"]>span");
     //variables
     //Constractor
     public HomePage(WebDriver driver) {
@@ -16,52 +19,41 @@ public class HomePage extends PageBase {
     }
     //action
     public void ClickOnCheckInDate() {
-        expwait();
-        click1(checkInBtn);
-        expwait();
+        impwait();
+      boolean x = driver.findElement(anyWhereBtn).isDisplayed();
+        if (x){
+            driver.findElement(anyWhereBtn).click();
+            impwait();
+            driver.findElement(checkInBtn).click();
+        }
+        else {
+            impwait();
+            driver.findElement(checkInBtn2).click();
+        }
         new HomePage(driver);
     }
     public void SelectCheckInDate() {
-        LocalDate localDate = LocalDate.now();
-        String strDay = localDate.toString();
-        String[] partsss = strDay.split("-");
-        String striDay = partsss[1];
-        String striDay3 = partsss[2];
-        var currentDay = "[data-testid=\"" + striDay + "-" + striDay3 + "-daytext\"]";
-        var checkInDay = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + currentDay);
-        expwait();
-        click1(checkInDay);
+        impwait();
+        String localDate1 = LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        var checkInDay1 = By.cssSelector("[data-testid=\"calendar-day-" + localDate1);
+       driver.findElement(checkInDay1).click();
         new HomePage(driver);
     }
     public void SelectCheckoutDateInTheSameMonths(int Days) {
-        expwait();
-        LocalDate localDate1 = LocalDate.now().plusDays(Days);
-        String strDay2 = localDate1.toString();
-        String[] partssss = strDay2.split("-");
-        String striiDay = partssss[1];
-        String striiDay3 = partssss[2];
-        expwait();
-        var checkOutDay = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
-        var checkOutDayBtn = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + checkOutDay);
-        expwait();
-        click1(checkOutDayBtn);
+        impwait();
+        String localDate2 = LocalDate.now().plusDays(Days).format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        var checkOutDay1 = By.cssSelector("[data-testid=\"calendar-day-" + localDate2);
+        driver.findElement(checkOutDay1).click();
         new HomePage(driver);
     }
 
     public void SelectCheckoutDateInDifferentMonths (int Days) {
-        expwait();
-        LocalDate localDate1 = LocalDate.now().plusDays(Days);
-        String strDay2 = localDate1.toString();
-        String[] partssss = strDay2.split("-");
-        String striiDay = partssss[1];
-        String striiDay3 = partssss[2];
-        expwait();
-        var checkOutDay = "[data-testid=\"" + striiDay + "-" + striiDay3 + "-daytext\"]";
-        var checkOutDayBtn = By.cssSelector("div[class=\"dg7nl1z dir dir-ltr\"]" + " " + checkOutDay);
-        expwait();
+        impwait();
+        String localDate3 = LocalDate.now().plusDays(Days).format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        var checkOutDay2 = By.cssSelector("[data-testid=\"calendar-day-" + localDate3);
         LocalDate localDate = LocalDate.now();
         String currentMonthStr = localDate.getMonth().toString().toLowerCase();
-        String checkOutMonthStr = localDate1.getMonth().toString().toLowerCase();
+        String checkOutMonthStr = localDate.getMonth().toString().toLowerCase();
         int currentMonthInt = switch (currentMonthStr) {
             case "january" -> 1;
             case "february" -> 2;
@@ -93,13 +85,50 @@ public class HomePage extends PageBase {
             case "december" -> 12;
             default -> 0;
         };
-
         for (int i = currentMonthInt;i <checkOutMonthInt ; i++){
-            click1(rightRow);
+            impwait();
+            driver.findElement(rightRow).click();
         }
-        expwait();
-        click1(checkOutDayBtn);
+        driver.findElement(checkOutDay2).click();
         new HomePage(driver);
     }
-
+    public void SelectCheckoutDateInDifferentYears(int Months) {
+        impwait();
+        String localDate4 = LocalDate.now().plusMonths(Months).format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        String[] partssss = localDate4.split("/");
+        String checkOutMonthStr = partssss[0];
+        String checkOutYearStr = partssss[2];
+        int checkOutYearInt = Integer.parseInt(checkOutYearStr);
+        int checkOutMonthInt = Integer.parseInt(checkOutMonthStr);
+        var checkOutDay4 = By.cssSelector("[data-testid=\"calendar-day-" + localDate4);
+        LocalDate localDate = LocalDate.now();
+        String currentMonthStr = localDate.getMonth().toString().toLowerCase();
+        int currentYearInt = localDate.getYear();
+            int currentMonthInt = switch (currentMonthStr) {
+            case "january" -> 1;
+            case "february" -> 2;
+            case "march" -> 3;
+            case "april" -> 4;
+            case "may" -> 5;
+            case "june" -> 6;
+            case "july" -> 7;
+            case "august" -> 8;
+            case "september" -> 9;
+            case "october" -> 10;
+            case "november" -> 11;
+            case "december" -> 12;
+            default -> 0;
+        };
+        while ( currentMonthInt != checkOutMonthInt || currentYearInt != checkOutYearInt) {
+            impwait();
+            driver.findElement(rightRow).click();
+                currentMonthInt ++;
+            if (currentMonthInt == 13) {
+                currentMonthInt = 1;
+                currentYearInt ++;
+            }
+        }
+        driver.findElement(checkOutDay4).click();
+        new HomePage(driver);
+    }
 }
